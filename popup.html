@@ -1,25 +1,68 @@
 <html>
+    <head>
+        <script src="dist/popup.js"></script>
+        <style>
+            body {
+                width: 300px;
+                padding: 10px;
+                font-family: sans-serif;
+            }
+            a {
+                font-size: large;
+                white-space: nowrap;
+                text-decoration-line: none;
+                display: block;
+                margin-bottom: 10px;
+                cursor: pointer;
+            }
 
-<head>
-    <script src="dist/popup.js"></script>
-    <style>
-        a {
-            font-size: large;
-            white-space: nowrap;
-            text-decoration-line: none;
-        }
+            a:hover {
+                color: red;
+            }
+            
+            hr {
+                border: 0;
+                border-top: 1px solid #ccc;
+                margin: 15px 0;
+            }
 
-        a:hover {
-            color: red;
-        }
-    </style>
-</head>
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
 
-<body>
-    <div>
-        <a id="menuTurnOnOff" href="#">Turn On/Off</a>
-        <a id="menuDeduplicate" href="#">Deduplicate Existing Tabs</a>
-    </div>
-</body>
+            textarea {
+                width: 100%;
+                height: 100px;
+                box-sizing: border-box;
+                margin-bottom: 5px;
+            }
 
+            button {
+                width: 100%;
+                padding: 5px;
+            }
+            
+            #status {
+                margin-top: 5px;
+                color: green;
+                text-align: center;
+                height: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <a id="menuTurnOnOff" href="#">Turn On/Off</a>
+            <a id="menuDeduplicate" href="#">Deduplicate Existing Tabs</a>
+        </div>
+        <hr>
+        <div>
+            <label for="exclusionRegexes">Exclude URLs (Regex):</label>
+            <textarea id="exclusionRegexes" placeholder="One regex per line&#10;e.g. .*google\.com.*"></textarea>
+            <button id="saveRegexes">Save Configuration</button>
+            <div id="status"></div>
+        </div>
+    </body>
 </html>

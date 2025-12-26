@@ -66,12 +66,26 @@ chrome.tabs.onUpdated.addListener((updatedTabId, updateInfo, updatedTab) => {
 function checkActiveAndDeduplicate(currentTabId: number | undefined, currentTabUrl: string) {
     if (!currentTabId) return;
 
-    chrome.storage.local.get(['active'], (result) => {
-        // Default to true if not set, though onInstalled handles init
+    chrome.storage.local.get(['active', 'exclusionRegexes'], (result) => {
         const isActive = result.active !== false;
-        if (isActive) {
-            verifyAndDeduplicate(currentTabId, currentTabUrl);
+        if (!isActive) return;
+
+        // Check exclusions
+        if (result.exclusionRegexes && Array.isArray(result.exclusionRegexes)) {
+            for (const regexStr of result.exclusionRegexes) {
+                try {
+                    const regex = new RegExp(regexStr);
+                    if (regex.test(currentTabUrl)) {
+                        // Matches exclusion, allows duplicate
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Invalid regex in storage:', regexStr, e);
+                }
+            }
         }
+
+        verifyAndDeduplicate(currentTabId, currentTabUrl);
     });
 }
 
